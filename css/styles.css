@@ -493,20 +493,44 @@ a {
   text-transform: uppercase;
 }
 
-.connect-tone-0 {
-  background: #f0d78c;
+.connect-solved-row.connect-tone-0,
+.connect-tile.is-solved.connect-tone-0 {
+  background: #f9df6d;
 }
 
-.connect-tone-1 {
-  background: #b7c98a;
+.connect-solved-row.connect-tone-1,
+.connect-tile.is-solved.connect-tone-1 {
+  background: #a0c35a;
 }
 
-.connect-tone-2 {
-  background: #9eb8d4;
+.connect-solved-row.connect-tone-2,
+.connect-tile.is-solved.connect-tone-2 {
+  background: #b0c4ef;
 }
 
-.connect-tone-3 {
-  background: #c4a4c8;
+.connect-solved-row.connect-tone-3,
+.connect-tile.is-solved.connect-tone-3 {
+  background: #ba81c5;
+}
+
+.connect-tile.is-solved {
+  border-color: transparent;
+  color: var(--ink);
+}
+
+.connect-solved-row.is-new {
+  animation: connect-reveal 0.4s ease;
+}
+
+@keyframes connect-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .connect-grid {
@@ -525,8 +549,8 @@ a {
   background: var(--paper-card);
   color: var(--ink);
   font-weight: 500;
-  font-size: clamp(0.72rem, 3.1vw, 0.92rem);
-  letter-spacing: 0.03em;
+  font-size: clamp(0.62rem, 2.6vw, 0.82rem);
+  letter-spacing: 0.01em;
   line-height: 1.15;
   text-align: center;
   text-transform: uppercase;
@@ -758,7 +782,8 @@ a {
   }
 
   .gate input.is-wrong,
-  .connect-tile.is-shaking {
+  .connect-tile.is-shaking,
+  .connect-solved-row.is-new {
     animation: none;
   }
 

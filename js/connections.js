@@ -1,21 +1,22 @@
-// Replace these four groups. Keep four words in each.
-// Order is difficulty: first is the easiest color, last is the hardest.
+// Order is the color: yellow, green, blue, purple.
+// Purple hides a month in each word: Doctor (oct), Nightmare (mar),
+// Separate (sep), Apricot (apr).
 const PUZZLE = [
   {
-    name: "Sample: colors",
-    words: ["Red", "Blue", "Green", "Gold"],
+    name: "Places we've been together",
+    words: ["Puerto Rico", "Lisbon", "NYC", "Cascais"],
   },
   {
-    name: "Sample: seasons",
-    words: ["Spring", "Summer", "Autumn", "Winter"],
+    name: "Our first four dates",
+    words: ["Mogador", "Mister Paradise", "Studio 151", "LIC"],
   },
   {
-    name: "Sample: card suits",
-    words: ["Hearts", "Clubs", "Spades", "Diamonds"],
+    name: "___ feast",
+    words: ["Thanksgiving", "Sacrificial", "Wedding", "Lavish"],
   },
   {
-    name: "Sample: ___ board",
-    words: ["Key", "Dash", "Card", "Cutting"],
+    name: "Hides OCT, MAR, SEP, or APR",
+    words: ["Doctor", "Nightmare", "Separate", "Apricot"],
   },
 ];
 
@@ -39,6 +40,8 @@ const state = {
   seen: new Set(),
   over: false,
   shake: false,
+  justSolved: null,
+  revealing: false,
 };
 
 function escapeHtml(value) {
@@ -62,6 +65,17 @@ function shuffle(items) {
 
 function setMessage(text) {
   messageEl.textContent = text;
+}
+
+function fitTiles() {
+  gridEl.querySelectorAll(".connect-tile").forEach((button) => {
+    let size = parseFloat(getComputedStyle(button).fontSize);
+    const min = 8;
+    while (button.scrollWidth > button.clientWidth + 1 && size > min) {
+      size -= 0.5;
+      button.style.fontSize = size + "px";
+    }
+  });
 }
 
 function selectedTiles() {
@@ -101,6 +115,8 @@ function start() {
   state.seen = new Set();
   state.over = false;
   state.shake = false;
+  state.justSolved = null;
+  state.revealing = false;
   setMessage("");
   render();
 }
@@ -109,9 +125,11 @@ function render() {
   solvedEl.innerHTML = state.solved
     .map((groupIndex) => {
       const group = PUZZLE[groupIndex];
+      const fresh = groupIndex === state.justSolved ? " is-new" : "";
       return (
         '<div class="connect-solved-row connect-tone-' +
         groupIndex +
+        fresh +
         '">' +
         "<p class=\"connect-solved-name\">" +
         escapeHtml(group.name) +
@@ -123,6 +141,7 @@ function render() {
       );
     })
     .join("");
+  state.justSolved = null;
 
   gridEl.innerHTML = state.tiles
     .map((tile) => {
@@ -148,6 +167,8 @@ function render() {
     state.shake = false;
   }
 
+  fitTiles();
+
   dotsEl.innerHTML = "";
   for (let i = 0; i < MAX_MISTAKES; i += 1) {
     const dot = document.createElement("span");
@@ -168,23 +189,42 @@ function render() {
   againBtn.hidden = !state.over;
 }
 
+function finishSolve(groupIndex) {
+  state.revealing = false;
+  state.justSolved = groupIndex;
+  state.solved.push(groupIndex);
+  state.tiles = state.tiles.filter((tile) => tile.groupIndex !== groupIndex);
+  state.selected.clear();
+  if (state.solved.length === PUZZLE.length) {
+    state.over = true;
+    setMessage("You found every group.");
+  } else {
+    setMessage("");
+  }
+  render();
+}
+
 function submitGuess() {
   const picked = selectedTiles();
-  if (state.over || picked.length !== 4) return;
+  if (state.revealing || state.over || picked.length !== 4) return;
 
   const groupIndex = picked[0].groupIndex;
   const correct = picked.every((tile) => tile.groupIndex === groupIndex);
   if (correct) {
-    state.solved.push(groupIndex);
-    state.tiles = state.tiles.filter((tile) => tile.groupIndex !== groupIndex);
-    state.selected.clear();
-    if (state.solved.length === PUZZLE.length) {
-      state.over = true;
-      setMessage("You found every group.");
-    } else {
-      setMessage("");
+    state.revealing = true;
+    const ids = new Set(picked.map((tile) => tile.id));
+    gridEl.querySelectorAll(".connect-tile").forEach((button) => {
+      if (!ids.has(button.dataset.id)) return;
+      button.classList.remove("is-selected");
+      button.classList.add("is-solved", "connect-tone-" + groupIndex);
+    });
+    submitBtn.disabled = true;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      finishSolve(groupIndex);
+      return;
     }
-    render();
+    window.setTimeout(() => finishSolve(groupIndex), 460);
     return;
   }
 
@@ -215,7 +255,7 @@ function submitGuess() {
 
 gridEl.addEventListener("click", (event) => {
   const button = event.target.closest(".connect-tile");
-  if (!button || state.over) return;
+  if (!button || state.over || state.revealing) return;
   const id = button.dataset.id;
   if (state.selected.has(id)) {
     state.selected.delete(id);
@@ -230,13 +270,14 @@ gridEl.addEventListener("click", (event) => {
 });
 
 shuffleBtn.addEventListener("click", () => {
-  if (state.over) return;
+  if (state.over || state.revealing) return;
   state.tiles = shuffle(state.tiles);
   setMessage("");
   render();
 });
 
 clearBtn.addEventListener("click", () => {
+  if (state.revealing) return;
   state.selected.clear();
   setMessage("");
   render();
