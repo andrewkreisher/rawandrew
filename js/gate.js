@@ -1,4 +1,4 @@
-const KEY = "yearone-open";
+const KEY = "rawandrew-open";
 const ACCEPT = String.fromCharCode(114, 97, 119, 97, 110);
 
 const form = document.querySelector("#gate-form");
@@ -19,12 +19,12 @@ form.addEventListener("submit", (event) => {
     feedback.hidden = true;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      location.href = "anniversary.html";
+      location.href = "home.html";
       return;
     }
     document.body.classList.add("is-opening");
     window.setTimeout(() => {
-      location.href = "anniversary.html";
+      location.href = "home.html";
     }, 460);
     return;
   }

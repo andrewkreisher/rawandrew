@@ -1,4 +1,4 @@
-const KEY = "yearone-open";
+const KEY = "rawandrew-open";
 const gate = document.currentScript && document.currentScript.getAttribute("data-gate");
 
 if (sessionStorage.getItem(KEY) !== "1") {
