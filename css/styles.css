@@ -513,6 +513,11 @@ a {
   background: #ba81c5;
 }
 
+.connect-solved-row.connect-tone-4,
+.connect-tile.is-solved.connect-tone-4 {
+  background: #f5a142;
+}
+
 .connect-tile.is-solved {
   border-color: transparent;
   color: var(--ink);

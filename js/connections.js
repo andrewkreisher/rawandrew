@@ -1,4 +1,4 @@
-// Order is the color: yellow, green, blue, purple.
+// Order is the color: yellow, green, blue, purple, orange.
 // Purple hides a month in each word: Doctor (oct), Nightmare (mar),
 // Separate (sep), Apricot (apr).
 const PUZZLE = [
@@ -18,9 +18,13 @@ const PUZZLE = [
     name: "Hides OCT, MAR, SEP, or APR",
     words: ["Doctor", "Nightmare", "Separate", "Apricot"],
   },
+  {
+    name: "The ___ experience",
+    words: ["Rawan", "U", "Human", "Near death"],
+  },
 ];
 
-const MAX_MISTAKES = 4;
+const MAX_MISTAKES = 5;
 
 const solvedEl = document.querySelector("#connect-solved");
 const gridEl = document.querySelector("#connect-grid");
