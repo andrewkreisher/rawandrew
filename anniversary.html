@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f3eee6" />
+    <title>One year</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,520;0,9..144,620;1,9..144,480&family=Outfit:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/guard.js" data-gate="index.html"></script>
+  </head>
+  <body class="page">
+    <header class="top">
+      <a class="mark" href="anniversary.html">Year one</a>
+      <button class="text-button" type="button" data-lock>Lock the door</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <!-- Change the dateline and the intro once you know the wording you want. -->
+        <p class="dateline">First date, one year on</p>
+        <h1>One year.</h1>
+        <p class="lede">
+          A small site for the games you played and the things only the two of you would think to click.
+        </p>
+      </section>
+
+      <section class="section" aria-labelledby="games-heading">
+        <div class="section-head">
+          <h2 id="games-heading">Games</h2>
+          <p>Open a room when you are ready to build it.</p>
+        </div>
+        <!--
+          Adding a game:
+          1. Copy games/crossword.html and rename it.
+          2. Copy one of the cards below and point the link at the new file.
+        -->
+        <div class="cards">
+          <a class="card" href="games/crossword.html">
+            <span class="card-kicker">Game</span>
+            <h3>Crossword</h3>
+            <p>Clues from the year, waiting for a grid.</p>
+            <span class="card-status">Not built yet</span>
+          </a>
+          <a class="card" href="games/connections.html">
+            <span class="card-kicker">Game</span>
+            <h3>Connections</h3>
+            <p>Four groups, sixteen tiles, your own categories.</p>
+            <span class="card-status">Sample puzzle</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section quiet" aria-labelledby="eggs-heading">
+        <div class="section-head">
+          <h2 id="eggs-heading">Hidden things</h2>
+          <p>
+            Easter eggs can live in any page: a word that reacts, a corner that opens, a click that only makes sense to you.
+            We can tuck them in after the rooms exist.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Made for one person.</p>
+    </footer>
+    <script src="js/anniversary.js"></script>
+  </body>
+</html>
